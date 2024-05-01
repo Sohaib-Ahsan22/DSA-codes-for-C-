@@ -26,13 +26,15 @@ struct QNode
     }
     else
     {
-       QNode* curr = front;
-            while (curr->next != NULL)
-            {
-                curr= curr->next;
-            }
+        rear->next=temp;
         rear=temp;
-        curr -> next= rear;
+    //    QNode* curr = front;
+    //         while (curr->next != NULL)
+    //         {
+    //             curr= curr->next;
+    //         }
+    //     rear=temp;
+    //     curr -> next= rear;
     }
  }
 

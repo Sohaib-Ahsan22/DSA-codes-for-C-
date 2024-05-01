@@ -39,7 +39,7 @@ struct course
         curr -> next= ptr;
     }
  }
- stud* top=NULL;
+
 void insertStudent ()
  {
     stud* ptr = (stud*) malloc (sizeof(stud));
@@ -50,91 +50,40 @@ void insertStudent ()
         cin >> ptr->COID;
 
         course* check = head;
-        while (ptr->COID!=check->CID)
+        while (check!=NULL)
         {
-            check=check->next;
+            if (ptr->COID==check->CID)
+            {
+                break;
+            }
+            else
+            {
+                check=check->next;
+            }
         }
-        if (check->start==NULL)
+        if (check==NULL)
+        {
+            cout<<"enter valid course ID"<<"\n";
+            delete ptr;
+        }
+        
+        else if (check->start==NULL)
         {
             check->start=ptr; 
-            cout<<"Enrolled"<<"\n";  
+            cout<<"Enrolled"<<"\n";
+              
         }
         else
         {
-            while (check->start->next!=NULL)
-            {
-                check->start=check->start->next;
-            }
-            check->start->next=ptr;
-            
+            stud* temp = check->start;
+            while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = ptr;
+        cout << "Enrolled and added\n";
         }
  }        
-//     if (top == NULL)
-//     {
-//         top = ptr;
-//     }
-//     else
-//     {
-//         stud* curr = top;
-//             while (curr->next != NULL)
-//             {
-//                 curr= curr->next;
-//             }
-//         curr -> next= ptr;
-//     }
-//  }
-
-//  void search(Records** head)
-//  {
-//     if (*head == NULL)
-//     {
-//         cout<<"list is ALL empty"<<"\n";
-//     }
-//     else
-//     {
-//         int tosearch;
-//         cout<<"enter roll number to be searched:"<< "\n";
-//         cin>>tosearch;
-//         Records* curr = *head;
-//         bool found;
-//         while (curr!=NULL)
-//         {
-//             if (curr-> Rno == tosearch)
-//             {
-//                 cout<<"detail of entered roll number is:      "<<"\n"<<"roll number  :    "<<curr->Rno << "\n" <<"GPA is  :     "<< curr ->GPA<<"\n";
-//                 found = true;
-//                 break;
-//             }
-//             else
-//             {
-//                 curr = curr->next;
-//             } 
-//         } 
-//         if (found == false)
-//         {
-//             cout << "data not found"<< "\n" ;   
-//         }
-//     }
-//  }
-
-//  void print(Records** head)
-//  {
-//     if (*head == NULL)
-//     {
-//         cout<<"list is ALL empty"<<"\n";
-//     }
-//     else
-//     {
-//         Records* curr = *head;
-//         while (curr!=NULL)
-//         {
-                    
-//                 cout<<"roll number is  :  "<<curr->Rno << "\n" <<"GPA is    :    "<< curr ->GPA<< "\n";
-//                 curr = curr->next;
-            
-//         } 
-//     }
-//  }
+  
 void printCourse()
  {
     if (head == NULL)
@@ -145,92 +94,72 @@ void printCourse()
     {
         course* curr = head;
         while (curr!=NULL)
-        {
-                    
-                cout<<"Course ID is  :  "<<curr->CID << "\n" ;
-                cout<<curr->start->SID<<"\n";
-                curr = curr->next;
-            
+        {         
+            cout<<"Course ID is  :  "<<curr->CID << "\n" ;
+               stud* temp = curr->start;
+            while (temp != NULL) {
+                cout << "Enrolled Student IDs: " << temp->SID << "\n";
+                temp = temp->next;
+            }
+            curr = curr->next;   
         } 
     }
  }
- void printStudent()
+ void Delete()
  {
-    if (top== NULL)
+    if (head == NULL)
     {
-        cout<<"list is ALL empty"<<"\n";
+        cout<<"No Course Entered"<<"\n";
     }
     else
     {
-        stud* curr = top;
-        while (curr!=NULL)
+        int todel;
+        cout<<"enter course ID number to be deleted:"<< "\n";
+        cin>>todel;
+        course* curr = head;
+        if (todel == head->CID)
         {
-                    
-                cout<<"Student ID is  :  "<<curr->SID << "\n" ;
-                curr = curr->next;
-            
-        } 
+        head = head->next;
+        while (curr->start!= NULL)
+        {
+            stud* temp=curr->start;
+            curr->start=curr->start->next;
+            free(temp);
+        }
+        free(curr);
+        cout<<"successfully deleted"<<"\n";  
+        }
+        else
+        {
+            course* prev = head;
+            curr = head->next;
+            while (curr!= NULL)
+            {
+                if (curr->CID== todel)
+                {
+                    prev->next = curr->next;
+                     while (curr->start!= NULL)
+                {
+                    stud* temp=curr->start;
+                    curr->start=curr->start->next;
+                    free(temp);
+                }
+                    free(curr);
+                    cout<<"successfully deleted"<<"\n";
+                    break;
+                }
+                //prev = curr;
+                curr=curr->next;
+                prev=prev->next;
+            }
+            if (curr == NULL)
+            {
+                cout<<"record not found"<<"\n";
+            }    
+        }
     }
  }
-//  void Delete(Records** head)
-//  {
-//     if (*head == NULL)
-//     {
-//         cout<<"list is ALL empty"<<"\n";
-//     }
-//     else
-//     {
-//         int todel;
-//         cout<<"enter roll number to be deleted:"<< "\n";
-//         cin>>todel;
-//         Records* curr = *head;
-//         if (todel == (*head)->Rno)
-//         {
-//         *head = (*head)->next;
-//         free(curr);
-//         cout<<"successfully deleted"<<"\n";  
-//         }
-//         else
-//         {
-//             Records* prev = *head;
-//             curr = (*head)->next;
-//             while (curr!= NULL)
-//             {
-//                 if (curr-> Rno == todel)
-//                 {
-//                     prev->next = curr->next;
-//                     free(curr);
-//                     cout<<"successfully deleted"<<"\n";
-//                     break;
-//                 }
-//                 //prev = curr;
-//                 curr=curr->next;
-//                 prev=prev->next;
-//             }
-//             if (curr == NULL)
-//             {
-//                 cout<<"record not found"<<"\n";
-//             }    
-//         }
-//     }
-//  }
-//  void DeleteAll(Records** head)
-//  {
-//     if (*head == NULL)
-//     {
-//         cout<<"list is already empty"<<"\n";
-//     }
-//     else{
-//         Records* curr = *head;
-//         while(curr!=NULL)
-//         {
-//             *head = (*head)->next;
-//             free(curr);
-//             curr= (*head);
-//         }
-//         cout<<"All DATA DELETED"<<"\n";
-//     }
-//  }
+
 
  int main()
     {
@@ -238,9 +167,10 @@ void printCourse()
         cout << "if you want to enter Course ID press 1" << "\n";
         cout << "if you want to enter Student ID press 2" << "\n";
         cout << "if you want to print Courses press 3" << "\n";
-        cout << "if you want to print Students press 4" << "\n";
+        cout << "if you want to delete a course press 4" << "\n";
+        cout << "if you want to end press 5" << "\n";
         cin>>a;
-        while (a==1 || a==2 || a==3 || a==4 || a== 5 || a==6)
+        while (a==1 || a==2 || a==3 || a==4 )
         {
             if (a==1)
             {
@@ -257,15 +187,20 @@ void printCourse()
             }
             else if (a==4)
             {
-                printStudent();
+                Delete();
             }
+            
+            // else if (a==4)
+            // {
+            //     printStudent();
+            // }
             // else if (a==5)
             // {
             //     DeleteAll(&head);   
             // }
             
             
-            else if (a==6)
+            else if (a==5)
             {
                 cout<<"thanks for working"<< "\n"<<"RATE MY WORK OUT OF 5:"<<"\n";
                 int c =0;
@@ -278,19 +213,17 @@ void printCourse()
             cout << "if you want to enter Course ID press 1" << "\n";
             cout << "if you want to enter Student ID press 2" << "\n";
             cout << "if you want to print Courses press 3" << "\n";
-            cout << "if you want to delete some data press 4" << "\n";
-            cout << "if you want to delete all data press 5" << "\n";
-            cout << "if you want to end process press 6" << "\n";
+            cout << "if you want to delete a course press 4" << "\n";
+            cout << "if you want to end press 5" << "\n";
             cin>>a;
             while (a<1 || a>6)
             {
                 cout<<"invalid key entered"<<"\n";
-            cout << "if you want to enter data press 1" << "\n";
-            cout << "if you want to search data press 2" << "\n";
-            cout << "if you want to print data press 3" << "\n";
-            cout << "if you want to delete some data press 4" << "\n";
-            cout << "if you want to delete all data press 5" << "\n";
-            cout << "if you want to end process press 6" << "\n";
+            cout << "if you want to enter Course ID press 1" << "\n";
+            cout << "if you want to enter Student ID press 2" << "\n";
+            cout << "if you want to print Courses press 3" << "\n";
+            cout << "if you want to delete a course press 4" << "\n";
+            cout << "if you want to end press 5import-mod" << "\n";
             cin>>a;
             }    
         }

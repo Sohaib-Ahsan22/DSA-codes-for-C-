@@ -4,7 +4,7 @@ using namespace std;
 
 struct StNode
 {
-    float vule;
+    float value;
     StNode* next;
 };
  
@@ -14,7 +14,7 @@ struct StNode
  {
     StNode* temp = (StNode*) malloc (sizeof(StNode));
         cout<<"enter value"<< "\n";
-        cin >> temp-> vule;
+        cin >> temp-> value;
         temp -> next=NULL;
         
 
@@ -39,7 +39,7 @@ struct StNode
     else
     {
     StNode* curr = top;
-    cout << top->vule<< "\n";
+    cout << top->value<< "\n";
     top=top->next;
     free(curr);
     }
@@ -88,4 +88,3 @@ struct StNode
            
         return 0;
     }
-    
